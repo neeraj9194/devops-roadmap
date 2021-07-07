@@ -1,15 +1,10 @@
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
 locals {
     cidr_block = "10.0.0.0/16"
-    availability_zones_count = length(data.aws_availability_zones.available.names)
-    nat_gateways_count = local.availability_zones_count
+    nat_gateways_count = var.availability_zones_count
 
     subnet_netnum = {
         public  = 0
-        private = local.availability_zones_count
+        private = var.availability_zones_count
   }
 }
 
@@ -27,7 +22,7 @@ resource "aws_vpc" "devops-roadmap" {
 # Subnets
 
 resource "aws_subnet" "public" {
-  count = local.availability_zones_count
+  count = var.availability_zones_count
 
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   cidr_block              = cidrsubnet(local.cidr_block, 4, count.index + local.subnet_netnum.public)
@@ -41,7 +36,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count = local.availability_zones_count
+  count = var.availability_zones_count
 
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   cidr_block              = cidrsubnet(local.cidr_block, 4, count.index + local.subnet_netnum.private)
@@ -57,11 +52,10 @@ resource "aws_subnet" "private" {
 # Internet gateway
 
 resource "aws_internet_gateway" "internet-gw" {
-    vpc_id = aws_vpc.devops-roadmap.id
-
-    tags = {
-        Name = "internet-gw"
-    }  
+  vpc_id = aws_vpc.devops-roadmap.id
+  tags = {
+      Name = "internet-gw"
+  }  
 }
 
 
