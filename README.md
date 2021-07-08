@@ -17,7 +17,7 @@ The following diagram shows the key components of the configuration for this mod
 
 - [x] Attach 8 GB extra EBS volume.
 
-- [ ] RDS
+- [x] RDS
 
 - [ ] S3 buckets with users.
 
