@@ -16,3 +16,14 @@ output "subnets" {
 output "nat_gateways" {
   value = aws_nat_gateway.nat.*.public_ip
 }
+
+output "rds" {
+  description = "RDS details"
+  value       = {
+    endpoint = aws_db_instance.rds.endpoint
+    db_name = aws_db_instance.rds.name
+    username = aws_db_instance.rds.username
+    password = aws_db_instance.rds.password
+  }
+  sensitive = true
+}

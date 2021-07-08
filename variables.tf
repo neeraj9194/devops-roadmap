@@ -9,3 +9,38 @@ variable "availability_zones_count" {
     default = 2
 }
 
+variable "db_name" {
+  description = "RDS DB name"
+  type        = string
+  default     = "default"
+}
+
+variable "db_username" {
+  description = "Username of databse"
+  type        = string
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "Password of databse"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_port" {
+  description = "Port of databse"
+  type        = number
+  default     = 3306
+}
+
+variable "db_engine" {
+  description = "Database engine (mysql, postgres etc.) Default: mysql"
+  type        = string
+  default     = "mysql"
+}
+
+variable "db_engine_version" {
+  description = "Database engine version"
+  type        = string
+  default     = "8.0"
+}
