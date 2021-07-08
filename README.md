@@ -15,7 +15,7 @@ The following diagram shows the key components of the configuration for this mod
 
 - [x] Two bastion machines (one per AZ).
 
-- [ ] Attach 8 GB extra EBS volume.
+- [x] Attach 8 GB extra EBS volume.
 
 - [ ] RDS
 
