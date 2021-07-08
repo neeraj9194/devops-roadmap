@@ -27,3 +27,20 @@ output "rds" {
   }
   sensitive = true
 }
+
+# pgp_key must be used to protect secrets.
+output "s3_read_user_secret" {
+  value = {
+    name = aws_iam_user.s3_read_only.name
+    secret = aws_iam_access_key.s3_read_only.encrypted_secret
+    }
+  sensitive   = true
+}
+
+output "s3_rw_user_secret" {
+  value = {
+    name = aws_iam_user.s3_read_write.name
+    secret = aws_iam_access_key.s3_read_write.encrypted_secret
+    }
+  sensitive   = true
+}

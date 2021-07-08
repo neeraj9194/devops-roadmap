@@ -44,3 +44,15 @@ variable "db_engine_version" {
   type        = string
   default     = "8.0"
 }
+
+variable key_path {
+  type = string
+  description = "SSH public generated manually"
+  default = "~/.ssh/awskeypair.pub"
+}
+
+variable s3_bucket_name {
+  type = string
+  description = "Bucket name used for registery service."
+  default = "registery-bucket"
+}

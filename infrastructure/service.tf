@@ -34,6 +34,7 @@ resource "aws_instance" "service-box" {
   count           = local.instance_count
   ami             = data.aws_ami.ubuntu.id
   security_groups = [aws_security_group.private_instance_sg.id]
+  key_name        = aws_key_pair.awskeypair.key_name
 
   instance_type = "t2.micro"
 
@@ -79,6 +80,7 @@ resource "aws_instance" "bastion-host" {
   count           = var.availability_zones_count
   ami             = data.aws_ami.ubuntu.id
   security_groups = [aws_security_group.bastion_sg.id]
+  key_name        = aws_key_pair.awskeypair.key_name
 
   instance_type = "t2.micro"
 
@@ -91,4 +93,9 @@ resource "aws_instance" "bastion-host" {
   tags = {
     Name = "bastion-host-${count.index}"
   }
+}
+
+resource "aws_key_pair" "awskeypair" {
+  key_name   = "awskeypair"
+  public_key = file(var.key_path)
 }
