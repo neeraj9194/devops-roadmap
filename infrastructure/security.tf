@@ -34,6 +34,30 @@ resource "aws_security_group" "private_instance_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
+    security_groups = [aws_security_group.bastion_sg.id]
+  }
+  
+  ingress {
+    description     = "http request from LB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_sg.id]
+  }
+
+  ingress {
+    description     = "https request from LB"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   
   tags = {
@@ -55,6 +79,7 @@ resource "aws_security_group" "rds_internal_sg" {
     from_port       = var.db_port
     to_port         = var.db_port
     protocol        = "tcp"
+    security_groups = [aws_security_group.private_instance_sg.id]
   }
 
   egress {
@@ -65,4 +90,42 @@ resource "aws_security_group" "rds_internal_sg" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+}
+
+resource "aws_security_group" "load_balancer_sg" {
+  vpc_id      = aws_vpc.devops-roadmap.id
+  name        = "load-balancer-sg"
+  description = "Enable HTTP and HTTPS traffic to LB"
+  
+  ingress {
+    description     = "http request from Internet"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description     = "https request from LB"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  
+  tags = {
+    Name = "load-balancer-sg"
+  }
+  
+  depends_on = [aws_vpc.devops-roadmap]
 }

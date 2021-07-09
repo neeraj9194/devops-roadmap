@@ -12,7 +12,7 @@ variable "availability_zones_count" {
 variable "db_name" {
   description = "RDS DB name"
   type        = string
-  default     = "default"
+  default     = "appdb"
 }
 
 variable "db_username" {
@@ -48,7 +48,7 @@ variable "db_engine_version" {
 variable key_path {
   type = string
   description = "SSH public generated manually"
-  default = "~/.ssh/awskeypair.pub"
+  default = "~/.ssh/awskey.pub"
 }
 
 variable s3_bucket_name {

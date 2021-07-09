@@ -32,7 +32,7 @@ output "rds" {
 output "s3_read_user_secret" {
   value = {
     name = aws_iam_user.s3_read_only.name
-    secret = aws_iam_access_key.s3_read_only.encrypted_secret
+    secret = aws_iam_access_key.s3_read_only.secret
     }
   sensitive   = true
 }
@@ -40,7 +40,12 @@ output "s3_read_user_secret" {
 output "s3_rw_user_secret" {
   value = {
     name = aws_iam_user.s3_read_write.name
-    secret = aws_iam_access_key.s3_read_write.encrypted_secret
+    secret = aws_iam_access_key.s3_read_write.secret
     }
   sensitive   = true
+}
+
+output "dns" {
+  description = "DNS endpoint for application load balancer."
+  value       = aws_lb.application_lb.dns_name
 }
