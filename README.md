@@ -36,6 +36,20 @@ After setup you can connect to bastion using this command.
 ssh -i ~/.ssh/awskey -A ubuntu@<Bastion-public-ip>
 ```
 
+## Ansible
+
+Install ansible plugin
+
+```
+ansible-galaxy collection install amazon.aws
+```
+
+Run playbook
+```
+cd ansible
+
+ansible-playbook deploy-registery.yaml -v --ask-vault-pass
+```
 
 
 > In-progress...

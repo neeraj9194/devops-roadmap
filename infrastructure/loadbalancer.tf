@@ -5,7 +5,7 @@ resource "aws_lb" "application_lb" {
   security_groups    = [aws_security_group.load_balancer_sg.id]
   subnets            = aws_subnet.public.*.id
 
-  enable_deletion_protection = true
+  # enable_deletion_protection = true
   tags = {
     Name = "application-lb"
   }

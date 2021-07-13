@@ -46,6 +46,7 @@ resource "aws_instance" "service-box" {
 
   tags = {
     Name = "service-box-${count.index}"
+    Type = "service-host"
   }
 }
 
@@ -92,6 +93,7 @@ resource "aws_instance" "bastion-host" {
 
   tags = {
     Name = "bastion-host-${count.index}"
+    Type = "bastion-host"
   }
 }
 
