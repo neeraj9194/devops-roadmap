@@ -7,8 +7,6 @@ hostnames:
   - ip-address
   - private-ip-address
 filters:
-  # tag:Name:
-  #   - bastion-*
   instance-state-name : running
 keyed_groups:
   - key: tags['Type']

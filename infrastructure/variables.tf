@@ -53,6 +53,5 @@ variable key_path {
 
 variable s3_bucket_name {
   type = string
-  description = "Bucket name used for registery service."
-  default = "registery-bucket"
+  description = "Bucket name used for registry service."
 }

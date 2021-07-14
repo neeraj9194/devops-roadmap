@@ -1,0 +1,25 @@
+# - hosts: "LB"
+#   gather_facts: false
+#   roles:
+#     - lb
+
+# - hosts: "APP"
+#   become: true
+#   strategy: debug
+#   gather_facts: false
+#   roles:
+#     - app
+
+- hosts: aws_service_host
+  become: true
+  vars:
+    # {{ groups["aws_bastion_host"][0] }} getting first available bastion host.
+    # Append -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null if any issue.
+    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q {{ bastion_user }}@{{ groups["aws_bastion_host"][0] }}"'
+  vars_files:
+    - vault.yaml
+    - terraform_vars.yaml
+  gather_facts: false
+  roles:
+    - registry
+  

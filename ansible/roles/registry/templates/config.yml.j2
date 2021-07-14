@@ -3,7 +3,7 @@ log:
     fields:
         service: registry
 http:
-    addr: :5000
+    addr: :{{ registry_port }}
 storage:
     cache:
       blobdescriptor: inmemory

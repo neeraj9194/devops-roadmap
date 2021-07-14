@@ -1,6 +1,6 @@
 # Devops Roadmap (Infrastructure)
 
-A terraform project to create AWS infrastructure to a web application with its container registery 
+A terraform project to create AWS infrastructure to a web application with its container registry 
 
 ## Overview
 
@@ -22,13 +22,26 @@ ssh-keygen -m PEM
 ssh-add <PrivateKeypath>
 ```
 
+- Create a tfvar file to overwrite default variable values, something like below,
+```
+{
+    "region": "ap-south-1",
+    "availability_zones_count": 2,
+    "db_name": <DB name>,
+    "db_username": <USERNAME>,
+    "db_password": <PASS>,
+    "key_path": "~/.ssh/awskey.pub",
+    "s3_bucket_name": "registry-bucket-backend"
+}
+```
+
 Now you can run terraform command to deploy all the changes. Yo
 ```
 # will ask you for DB password to set for RDS.
 
-terraform plan -var key_path="~/.ssh/awskey.pub"
+terraform plan -var key_path="~/.ssh/awskey.pub" -var-file=ap-south.tfvars.json
 OR
-terraform apply -var key_path="~/.ssh/awskey.pub"
+terraform apply -var key_path="~/.ssh/awskey.pub" -var-file=ap-south.tfvars.json
 ```
 
 After setup you can connect to bastion using this command.
@@ -48,7 +61,7 @@ Run playbook
 ```
 cd ansible
 
-ansible-playbook deploy-registery.yaml -v --ask-vault-pass
+ansible-playbook configure_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
 ```
 
 
@@ -70,7 +83,7 @@ ansible-playbook deploy-registery.yaml -v --ask-vault-pass
 
 ## TODO (software provisioning) 
 
-- [ ] Docker registery service.
+- [ ] Docker registry service.
 
 - [ ] Software provisioning and 
 
