@@ -9,7 +9,12 @@
       "python3-pip",
       "virtualenv",
       "python3-setuptools",
+      "python3-passlib",
     ]
+
+- name: Install bcrypt python package
+  pip:
+    name: bcrypt
 
 - name: Add Docker GPG apt Key
   apt_key:
@@ -36,11 +41,27 @@
 
 - name: "Create config file"
   template:
-      src: "config.yml.j2"
-      dest: "~/config.yml"
-      owner: "ubuntu"
-      group: "ubuntu"
-      mode: 0644
+    src: "config.yml.j2"
+    dest: "~/config.yml"
+    owner: "ubuntu"
+    group: "ubuntu"
+    mode: 0644
+
+- name: Generate hashed password for docker registry auth
+  htpasswd:
+    path: "{{ htpasswd_path }}"
+    name: "{{ registry_user }}"
+    password: "{{ registry_pass }}"
+    owner: root
+    group: root
+    mode: 0644
+    crypt_scheme: bcrypt
+
+- name: Synchronization of cert directory
+  synchronize:
+    use_ssh_args: yes
+    src: "{{ certificate_path }}"
+    dest: /certs
 
 - name: Run registry containers
   docker_container:
@@ -52,10 +73,15 @@
       - "{{ registry_port }}:{{ registry_port }}"
     volumes:
       - ~/config.yml:/etc/docker/registry/config.yml
+      - /auth:/auth
+      - /certs:/certs
     env:
-      REGISTRY_STORAGE_S3_ACCESSKEY: "{{ registry_storage_s3_accesskey }}" 
-      REGISTRY_STORAGE_S3_SECRETKEY: "{{ registry_storage_s3_secretkey }}" 
-      REGISTRY_STORAGE_S3_REGION: "{{ registry_storage_s3_region }}" 
+      REGISTRY_STORAGE_S3_ACCESSKEY: "{{ registry_storage_s3_accesskey }}"
+      REGISTRY_STORAGE_S3_SECRETKEY: "{{ registry_storage_s3_secretkey }}"
+      REGISTRY_STORAGE_S3_REGION: "{{ registry_storage_s3_region }}"
       REGISTRY_STORAGE_S3_BUCKET: "{{ registry_storage_s3_bucket }}"
-
-
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: "{{ htpasswd_path }}"
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/{{ certificate_filename }}
+      REGISTRY_HTTP_TLS_KEY: /certs/{{ tls_filename }}

@@ -55,3 +55,20 @@ variable s3_bucket_name {
   type = string
   description = "Bucket name used for registry service."
 }
+
+variable application_port {
+  type = number
+  description = "Application port on which it will run."
+  default = 80
+}
+
+variable registry_port {
+  type = number
+  description = "Port on which registry service will run"
+}
+
+variable output_cert_path {
+  type = string
+  description = "Path to put certificate."
+  default = "output/cert"
+}

@@ -4,6 +4,7 @@ log:
         service: registry
 http:
     addr: :{{ registry_port }}
+    secret: {{ registry_secret }}
 storage:
     cache:
       blobdescriptor: inmemory

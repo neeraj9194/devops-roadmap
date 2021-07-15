@@ -39,8 +39,16 @@ resource "aws_security_group" "private_instance_sg" {
   
   ingress {
     description     = "http request from LB"
-    from_port       = 80
-    to_port         = 80
+    from_port       = var.application_port
+    to_port         = var.application_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_sg.id]
+  }
+
+  ingress {
+    description     = "registery request from LB"
+    from_port       = var.registry_port
+    to_port         = var.registry_port
     protocol        = "tcp"
     security_groups = [aws_security_group.load_balancer_sg.id]
   }

@@ -49,3 +49,10 @@ output "dns" {
   description = "DNS endpoint for application load balancer."
   value       = aws_lb.application_lb.dns_name
 }
+
+output "cert" {
+  description = "Cert for LB."
+  value       = tls_self_signed_cert.self_cert.cert_pem
+}
+
+
