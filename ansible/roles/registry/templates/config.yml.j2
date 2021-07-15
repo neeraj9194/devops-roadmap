@@ -5,6 +5,13 @@ log:
 http:
     addr: :{{ registry_port }}
     secret: {{ registry_secret }}
+    debug:
+        addr: :{{ registry_debug_port }}
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
 storage:
     cache:
       blobdescriptor: inmemory

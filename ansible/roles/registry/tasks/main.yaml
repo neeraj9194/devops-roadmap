@@ -71,6 +71,7 @@
     restart_policy: always
     ports:
       - "{{ registry_port }}:{{ registry_port }}"
+      - "{{ registry_debug_port }}:{{ registry_debug_port }}"
     volumes:
       - ~/config.yml:/etc/docker/registry/config.yml
       - /auth:/auth

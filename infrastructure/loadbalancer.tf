@@ -43,8 +43,7 @@ resource "aws_lb_target_group" "registry_group" {
   # change HC later.
   health_check {
     path = "/debug/health"
-    protocol = "HTTPS"
-    port = 5000
+    port = var.registry_debug_port
   }
 }
 

@@ -67,6 +67,12 @@ variable registry_port {
   description = "Port on which registry service will run"
 }
 
+variable registry_debug_port {
+  type = number
+  description = "Port on which registry debug will run"
+  default = 5001
+}
+
 variable output_cert_path {
   type = string
   description = "Path to put certificate."

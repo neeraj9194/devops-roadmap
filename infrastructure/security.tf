@@ -52,6 +52,14 @@ resource "aws_security_group" "private_instance_sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.load_balancer_sg.id]
   }
+  
+  ingress {
+    description     = "registery request from LB health check"
+    from_port       = var.registry_debug_port
+    to_port         = var.registry_debug_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_sg.id, aws_security_group.bastion_sg.id]
+  }
 
   ingress {
     description     = "https request from LB"
