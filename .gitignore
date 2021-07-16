@@ -32,3 +32,5 @@ override.tf.json
 ansible/s3_keys.yaml
 *.pem
 *.crt
+ansible/terraform_vars.yaml
+ansible/vault.yaml
