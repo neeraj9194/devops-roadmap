@@ -95,6 +95,6 @@ The following diagram shows the key components of the configuration for this mod
 
 - [ ] Django application.  
 
-- [-] Ansible deployments
+- [ ] Ansible deployments
 
 - [ ] CI/CD using Jenkins.
