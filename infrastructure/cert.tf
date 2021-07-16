@@ -7,7 +7,7 @@ resource "tls_self_signed_cert" "self_cert" {
   private_key_pem = tls_private_key.private_key.private_key_pem
 
   subject {
-    common_name  = "application-lb-1333012772.ap-south-1.elb.amazonaws.com"
+    common_name  = aws_lb.application_lb.dns_name
     organization = "Neeraj"
   }
 
@@ -17,6 +17,9 @@ resource "tls_self_signed_cert" "self_cert" {
     "key_encipherment",
     "digital_signature",
     "server_auth",
+  ]
+  depends_on = [
+    aws_lb.application_lb
   ]
 }
 

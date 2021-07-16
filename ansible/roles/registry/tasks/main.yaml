@@ -57,11 +57,11 @@
     mode: 0644
     crypt_scheme: bcrypt
 
-- name: Synchronization of cert directory
-  synchronize:
-    use_ssh_args: yes
+- name: Synchronization of cert directory to local docker
+  copy:
     src: "{{ certificate_path }}"
-    dest: /certs
+    dest: "/etc/docker/certs.d/{{ lb_dns }}/"
+  delegate_to: localhost
 
 - name: Run registry containers
   docker_container:
@@ -75,7 +75,6 @@
     volumes:
       - ~/config.yml:/etc/docker/registry/config.yml
       - /auth:/auth
-      - /certs:/certs
     env:
       REGISTRY_STORAGE_S3_ACCESSKEY: "{{ registry_storage_s3_accesskey }}"
       REGISTRY_STORAGE_S3_SECRETKEY: "{{ registry_storage_s3_secretkey }}"
@@ -84,5 +83,3 @@
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
       REGISTRY_AUTH_HTPASSWD_PATH: "{{ htpasswd_path }}"
-      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/{{ certificate_filename }}
-      REGISTRY_HTTP_TLS_KEY: /certs/{{ tls_filename }}

@@ -24,6 +24,14 @@ resource "aws_lb_target_group" "app_group" {
     path = "/"
     port = var.application_port
   }
+  
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "app-target-group"
+  }
 }
 
 resource "aws_lb_target_group_attachment" "app_target_attachment" {
@@ -35,15 +43,20 @@ resource "aws_lb_target_group_attachment" "app_target_attachment" {
 
 # Registry Target group
 resource "aws_lb_target_group" "registry_group" {
-  name     = "registry-target-group"
   port     = var.registry_port
-  protocol = "HTTPS"
+  protocol = "HTTP"
   vpc_id   = aws_vpc.devops-roadmap.id
 
-  # change HC later.
   health_check {
     path = "/debug/health"
     port = var.registry_debug_port
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "registry-target-group"
   }
 }
 

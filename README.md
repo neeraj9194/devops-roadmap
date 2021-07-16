@@ -8,61 +8,69 @@ The following diagram shows the key components of the configuration for this mod
 
 ![The following diagram shows the key components of the infrastructure (in progress..)](https://raw.githubusercontent.com/neeraj9194/devops-roadmap/main/docs/devops-roadmap.png)
 
+# Requirements
 
-## Quick Start (infrastructure)
+- Setup `aws cli` or have `~/.aws/credentials` file so that terraform can call API using your AWS account.
+- Install terraform
+- Install ansible
 
-The first step is to generate the SSH keys. In the terraform directory create another directory called keys and create your keys with the following command:
+# Quick Start
 
-```
-# create the keys
-# enter the file path to create. And use same file path in variable `key_path` in terraform command.
-ssh-keygen -m PEM
+## Infrastructure provisioning
 
-# Add key to keygen
-ssh-add <PrivateKeypath>
-```
+- The first step is to generate the SSH keys, that will be used to login to service boxes. 
+    
+    > This will generate 2 files Public key and private key, use public key path in tfvars in next step. 
+    ```
+    # create the keys.
+    ssh-keygen -m PEM -f "~/.ssh/awskey"
 
-- Create a tfvar file to overwrite default variable values, something like below,
-```
-{
-    "region": "ap-south-1",
-    "availability_zones_count": 2,
-    "db_name": <DB name>,
-    "db_username": <USERNAME>,
-    "db_password": <PASS>,
-    "key_path": "~/.ssh/awskey.pub",
-    "s3_bucket_name": "registry-bucket-backend"
-}
-```
+    # Add ssh keys to keychain
+    ssh-add <PrivateKeypath>
+    ```
 
-Now you can run terraform command to deploy all the changes. Yo
-```
-# will ask you for DB password to set for RDS.
+- Now, Create a tfvar file to overwrite default variable values, edit `ap-south.tfvars.example` and add your valuesin it.
 
-terraform plan -var key_path="~/.ssh/awskey.pub" -var-file=ap-south.tfvars.json
-OR
-terraform apply -var key_path="~/.ssh/awskey.pub" -var-file=ap-south.tfvars.json
-```
+    > Add DB user and password. Also add public key path that you added above.
 
-After setup you can connect to bastion using this command.
-```
-ssh -i ~/.ssh/awskey -A ubuntu@<Bastion-public-ip>
-```
+- Now you can run terraform command to deploy all the changes. Yo
+    ```
+    terraform plan -var-file=ap-south.tfvars
+    OR
+    terraform apply -var-file=ap-south.tfvars
+    ```
 
-## Ansible
+> After setup you can connect to bastion using this command.
 
-Install ansible plugin
+    ssh -i ~/.ssh/awskey -A ubuntu@<Bastion-public-ip>
+    
+## Software provisioning
 
-```
-ansible-galaxy collection install amazon.aws
-```
+- Firstly, Install aws dynamic inventory plugin for ansible, it will be used to fetch hosts from AWS.
 
-Run playbook
-```
-cd ansible
+    ```
+    ansible-galaxy collection install amazon.aws
+    ```
 
-ansible-playbook configure_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
-```
+- Now if you have run terraform apply command it will create 3 things in ansible directory.
+    
+    1. File `ansible/s3_keys.yaml`. It has secret for S3 users both Read-only and R/W. Copy themin vault.yaml.
+    2. File `ansible/terraform_vars.yaml`. It contains all the variables/outputs from terraform.
+    3. Directory `ansible/cert` which contains SSL certificates for LB.
+
+- Now you have to create a vault which will have values as given in `ansible/vault.yaml.example`. Copy it and edit your secrets. 
+
+    ```
+    # name vault.yaml is hardcoded right now so use that name only.
+    ansible-vault encrypt vault.yaml
+    ```
+
+- Run playbook, 
+    ```
+    cd ansible
+
+    ansible-playbook configure_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
+    ```
 
 
 > In-progress...
@@ -83,10 +91,10 @@ ansible-playbook configure_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
 
 ## TODO (software provisioning) 
 
-- [ ] Docker registry service.
+- [x] Docker registry service, integrated with ansible.
 
-- [ ] Software provisioning and 
+- [ ] Django application.  
 
-- [ ] Ansible deployments
+- [-] Ansible deployments
 
 - [ ] CI/CD using Jenkins.

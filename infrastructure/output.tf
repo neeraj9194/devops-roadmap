@@ -55,4 +55,12 @@ output "cert" {
   value       = tls_self_signed_cert.self_cert.cert_pem
 }
 
+output "service_instance_ip" {
+  description = "List of private IP addresses assigned to the service instances"
+  value       = aws_instance.service-box.*.private_ip
+}
 
+output "bastion_host_ip" {
+  description = "List of private IP addresses assigned to the service instances"
+  value       = aws_instance.bastion-host.*.public_ip
+}
