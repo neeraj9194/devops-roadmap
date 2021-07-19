@@ -34,3 +34,4 @@ ansible/s3_keys.yaml
 *.crt
 ansible/terraform_vars.yaml
 ansible/vault.yaml
+app/db.sqlite3
