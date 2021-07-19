@@ -1,0 +1,28 @@
+version: "3.2"
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: "blog_db"
+      MYSQL_USER: "root"
+      MYSQL_ROOT_PASSWORD: "rootpwd"
+    volumes:
+      - ../docker-data/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+  api:
+    image: 
+    command: "./manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    environment:
+      - WEB_ENV=dev
+      - DB_NAME=blog_db
+      - DB_USER=root
+      - DB_PASS=rootpwd
+      - DB_HOST=mysql
+      - DB_PORT=3306
+    working_dir: /app
+    volumes:
+      - .:/app

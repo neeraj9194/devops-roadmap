@@ -10,6 +10,9 @@
       "virtualenv",
       "python3-setuptools",
       "python3-passlib",
+      "python3-dev",
+      "default-libmysqlclient-dev",
+      "build-essential"
     ]
 
 - name: Install bcrypt python package
