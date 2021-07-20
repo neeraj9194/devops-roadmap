@@ -93,8 +93,12 @@ The following diagram shows the key components of the configuration for this mod
 
 - [x] Docker registry service, integrated with ansible.
 
-- [ ] Django application.  
+- [x] Django application.  
 
-- [ ] Ansible deployments
+- [x] Containerize the application using docker.
+
+- [x] make file to run tests, create docker images and push to docker registry.
+
+- [x] Ansible's dynamic inventory to provision the application.
 
 - [ ] CI/CD using Jenkins.

@@ -1,0 +1,48 @@
+- name: Log into private registry and force re-authorization
+  docker_login:
+    registry: "{{ lb_dns }}/v2"
+    username: "{{ registry_user }}"
+    password: "{{ registry_pass }}"
+    reauthorize: yes
+
+- name: Build app image and push it to private repo
+  docker_image:
+    build:
+      path: ../app
+      pull: no
+    name: "{{ lb_dns }}/v2/djangoapp"
+    tag: v1
+    force: true 
+    push: yes
+    source: build
+
+- name: Run migrations
+  docker_container:
+    name: "djangoapp-migration"
+    recreate: yes
+    image: "{{ lb_dns }}/v2/djangoapp"
+    restart_policy: always
+    command: "python3 manage.py migrate --noinput"
+    env:
+      WEB_ENV: "dev"
+      DB_NAME: "{{ db_name }}"
+      DB_USER: "{{ db_username }}"
+      DB_PASS: "{{ db_password }}"
+      DB_HOST: "{{ db_host }}"
+      DB_PORT: "{{ db_port }}"
+
+- name: Run app container
+  docker_container:
+    name: "djangoapp"
+    recreate: yes
+    image: "{{ lb_dns }}/v2/djangoapp"
+    restart_policy: always
+    ports:
+      - "8000:8000"
+    env:
+      WEB_ENV: "dev"
+      DB_NAME: "{{ db_name }}"
+      DB_USER: "{{ db_username }}"
+      DB_PASS: "{{ db_password }}"
+      DB_HOST: "{{ db_host }}"
+      DB_PORT: "{{ db_port }}"

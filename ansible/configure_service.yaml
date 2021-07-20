@@ -1,14 +1,4 @@
-# - hosts: "LB"
-#   gather_facts: false
-#   roles:
-#     - lb
 
-# - hosts: "APP"
-#   become: true
-#   strategy: debug
-#   gather_facts: false
-#   roles:
-#     - app
 
 - hosts: aws_service_host
   become: true
@@ -22,4 +12,4 @@
   gather_facts: false
   roles:
     - registry
-  
+    - app
