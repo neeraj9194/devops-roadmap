@@ -13,15 +13,12 @@ class ArticlePagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class ArticleSummaryApi(ListAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSummarySerializer
-    pagination_class = ArticlePagination
-
 class ArticleApi(ModelViewSet):
     queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def list(self, request, *args, **kwargs):
-        raise MethodNotAllowed(request.method) 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ArticleSummarySerializer
+        else:
+            return ArticleSerializer

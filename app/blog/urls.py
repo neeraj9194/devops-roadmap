@@ -18,7 +18,7 @@ from django.urls import path
 from django.urls import include, path
 from rest_framework import routers
 from account.api import UserApi
-from article.api import ArticleSummaryApi, ArticleApi
+from article.api import ArticleApi
 
 router = routers.DefaultRouter()
 router.register('user', UserApi)
@@ -26,7 +26,6 @@ router.register('article', ArticleApi)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/articles', ArticleSummaryApi.as_view()),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
