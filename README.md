@@ -67,14 +67,20 @@ The following diagram shows the key components of the configuration for this mod
 
 - Run playbook, 
     ```
-    cd ansible
-
-    ansible-playbook deploy_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
+    make deploy
     ```
+    The above command will deploy docker `registry`, a django app and initialize DB with default user.
 
+### Other Make commands you can use
+```
+make init_server      # to initlize server with python packages and docker
+make deploy_registry  # only deploy registry
+make deploy_app       # only deploy django app
+make init_db          # initialize DB with default user. 
+```
 
-> In-progress...
-
+> Now you can login into application on LB dns address, goto 
+`<lb-dns-address>/api-auth/login/`
 
 ## TODO (infrastructure)
 
