@@ -69,7 +69,7 @@ The following diagram shows the key components of the configuration for this mod
     ```
     cd ansible
 
-    ansible-playbook configure_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
+    ansible-playbook deploy_service.yaml -i aws_ec2.yaml -v --ask-vault-pass
     ```
 
 

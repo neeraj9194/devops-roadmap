@@ -1,40 +1,6 @@
-- name: Install required system packages
-  apt: name={{ item }} state=latest update_cache=yes
-  loop:
-    [
-      "apt-transport-https",
-      "ca-certificates",
-      "curl",
-      "software-properties-common",
-      "python3-pip",
-      "virtualenv",
-      "python3-setuptools",
-      "python3-passlib",
-      "python3-dev",
-      "default-libmysqlclient-dev",
-      "build-essential"
-    ]
-
 - name: Install bcrypt python package
   pip:
     name: bcrypt
-
-- name: Add Docker GPG apt Key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: Add Docker Repository
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
-    state: present
-
-- name: Update apt and install docker-ce
-  apt: update_cache=yes name=docker-ce state=latest
-
-- name: Install Docker Module for Python
-  pip:
-    name: docker
 
 - name: Build Docker registry image
   docker_image:
@@ -65,6 +31,12 @@
     src: "{{ certificate_path }}"
     dest: "/etc/docker/certs.d/{{ lb_dns }}/"
   delegate_to: localhost
+  run_once: true
+
+- name: Synchronization of cert directory to service machines
+  copy:
+    src: "{{ certificate_path }}"
+    dest: "/etc/docker/certs.d/{{ lb_dns }}/"
 
 - name: Run registry containers
   docker_container:

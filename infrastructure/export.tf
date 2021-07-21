@@ -13,7 +13,7 @@ resource "local_file" "tf_ansible_vars_file_new" {
     key_filename: ca-key.pem
     lb_dns: ${aws_lb.application_lb.dns_name}
     db_host: ${aws_db_instance.rds.address}
-    db_port: ${var.db_port}
+    db_port: "${var.db_port}"
     db_name: ${var.db_name}
     db_username: ${var.db_username}
     db_password: ${var.db_password}

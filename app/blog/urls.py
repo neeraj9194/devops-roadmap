@@ -19,12 +19,14 @@ from django.urls import include, path
 from rest_framework import routers
 from account.api import UserApi
 from article.api import ArticleApi
+from django.views.generic import RedirectView
 
 router = routers.DefaultRouter()
 router.register('user', UserApi)
 router.register('article', ArticleApi)
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='api/', permanent=False)),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

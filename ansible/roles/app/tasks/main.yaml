@@ -1,4 +1,21 @@
+- name: "get hash of django app"
+  shell: "find {{ playbook_dir }}/../app -type f -exec md5sum {} \\; | md5sum |  awk '{print $1}'"
+  register: "image_tag"
+  delegate_to: localhost
+  run_once: true
+- set_fact: 
+    image_tag={{ image_tag.stdout }}
+
 - name: Log into private registry and force re-authorization
+  docker_login:
+    registry: "{{ lb_dns }}/v2"
+    username: "{{ registry_user }}"
+    password: "{{ registry_pass }}"
+    reauthorize: yes
+  delegate_to: localhost
+  run_once: true
+
+- name: Log into private registry on service machines
   docker_login:
     registry: "{{ lb_dns }}/v2"
     username: "{{ registry_user }}"
@@ -9,18 +26,33 @@
   docker_image:
     build:
       path: ../app
-      pull: no
+      pull: yes
     name: "{{ lb_dns }}/v2/djangoapp"
-    tag: v1
-    force: true 
+    tag: "{{ image_tag }}"
+    force_source: yes
+    force_tag: yes
     push: yes
     source: build
+  delegate_to: localhost
+  run_once: true
+
+
+- name: Add tag latest to image
+  docker_image:
+    name: "{{ lb_dns }}/v2/djangoapp:{{ image_tag }}"
+    repository: "{{ lb_dns }}/v2/djangoapp:latest"
+    # As 'latest' usually already is present, we need to enable overwriting of existing tags:
+    force_tag: yes
+    source: local
+    push: yes
+  delegate_to: localhost
+  run_once: true
 
 - name: Run migrations
   docker_container:
     name: "djangoapp-migration"
     recreate: yes
-    image: "{{ lb_dns }}/v2/djangoapp"
+    image: "{{ lb_dns }}/v2/djangoapp:{{ image_tag }}"
     restart_policy: always
     command: "python3 manage.py migrate --noinput"
     env:
@@ -30,15 +62,16 @@
       DB_PASS: "{{ db_password }}"
       DB_HOST: "{{ db_host }}"
       DB_PORT: "{{ db_port }}"
+  run_once: true
 
 - name: Run app container
   docker_container:
     name: "djangoapp"
     recreate: yes
-    image: "{{ lb_dns }}/v2/djangoapp"
+    image: "{{ lb_dns }}/v2/djangoapp:{{ image_tag }}"
     restart_policy: always
     ports:
-      - "8000:8000"
+      - "80:8000"
     env:
       WEB_ENV: "dev"
       DB_NAME: "{{ db_name }}"

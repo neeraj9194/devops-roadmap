@@ -1,5 +1,3 @@
-
-
 - hosts: aws_service_host
   become: true
   vars:
@@ -11,5 +9,7 @@
     - terraform_vars.yaml
   gather_facts: false
   roles:
-    - registry
-    - app
+    - {role: 'server', tags: 'server'}
+    - {role: 'registry', tags: 'registry'}
+    - {role: 'app', tags: 'app'}
+    - {role: 'initdb', tags: 'initdb'}

@@ -1,0 +1,15 @@
+- name: Initlize DB with admin user
+  docker_container:
+    name: "djangoapp-initdb"
+    recreate: yes
+    image: "{{ lb_dns }}/v2/djangoapp:latest"
+    restart_policy: always
+    command: "python3 manage.py initadmin --username {{ admin_username }} --password {{ admin_password }}"
+    env:
+      WEB_ENV: "dev"
+      DB_NAME: "{{ db_name }}"
+      DB_USER: "{{ db_username }}"
+      DB_PASS: "{{ db_password }}"
+      DB_HOST: "{{ db_host }}"
+      DB_PORT: "{{ db_port }}"
+  run_once: true

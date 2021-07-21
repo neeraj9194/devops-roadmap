@@ -5,3 +5,5 @@ registry_pass: <PASSWORD FOR REGISTRY>
 registry_secret: <SECRET VALUE https://docs.docker.com/registry/configuration/#http> 
 application_storage_s3_accesskey: <S3 READ USER KEY>
 application_storage_s3_secretkey: <S3 READ USER KEY>
+admin_username: <Django app admin username>
+admin_password: <Django app admin password>
