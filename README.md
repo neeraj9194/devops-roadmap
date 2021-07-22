@@ -13,6 +13,9 @@ The following diagram shows the key components of the configuration for this mod
 - Setup `aws cli` or have `~/.aws/credentials` file so that terraform can call API using your AWS account.
 - Install terraform
 - Install ansible
+- VirtualBox
+- Vagrant
+
 
 # Quick Start
 
@@ -107,4 +110,4 @@ make init_db          # initialize DB with default user.
 
 - [x] Ansible's dynamic inventory to provision the application.
 
-- [ ] CI/CD using Jenkins.
+- [ ] CI/CD pipeline using Jenkins.
