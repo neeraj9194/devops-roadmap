@@ -8,12 +8,11 @@ from rest_framework.test import APIClient
 class TestAccountApi(TestCase):
 
     def auth(self, username, password):
-        self.client = APIClient()
         self.client.login(username=username, password=password)
         return super().setUp()
 
     def setUp(self) -> None:
-        self.client = None
+        self.client = APIClient()
         self.test_user = User.objects.create_user('testuser', 'test@test.com', 'testpass')
         self.new_user = {
             'username': 'test1', 

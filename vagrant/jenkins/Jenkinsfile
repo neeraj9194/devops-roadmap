@@ -19,8 +19,8 @@ pipeline {
         stage('Test App') {
             steps {
                 script {
-                    dockerImage.run("", "python3 manage.py test")
-                    dockerImage.run("", "pylint --load-plugins=pylint_django *.py --django-settings-module=blog.settings")
+                    sh "docker run djangoapp python3 manage.py test"
+                    sh "docker run djangoapp pylint --load-plugins=pylint_django *.py --django-settings-module=blog.settings"
                 }
             }
         }
