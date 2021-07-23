@@ -23,7 +23,7 @@ class TestAccountApi(TestCase):
 
     def test_create_user(self):
         self.auth('testuser', 'testpass')
-        response = self.client.post('/api/use/', self.new_user)
+        response = self.client.post('/api/user/', self.new_user)
         self.assertEqual(201, response.status_code)
         self.assertEqual(User.objects.count(), 2)
     
