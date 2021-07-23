@@ -26,7 +26,7 @@ class TestAccountApi(TestCase):
         response = self.client.post('/api/user/', self.new_user)
         self.assertEqual(201, response.status_code)
         self.assertEqual(User.objects.count(), 2)
-    
+
     def test_create_user_not_auth(self):
         response = self.client.post('/api/user/', self.new_user)
         self.assertEqual(403, response.status_code)

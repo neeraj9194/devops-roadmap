@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     sh "docker run djangoapp python3 manage.py test"
-                    sh "docker run djangoapp pylint --load-plugins=pylint_django *.py --django-settings-module=blog.settings"
+                    sh "docker run djangoapp flake8"
                 }
             }
         }

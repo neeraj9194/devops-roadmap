@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--username', type=str, help='Username of admin user')
-        parser.add_argument('--password',  type=str, help='Password of admin user')
+        parser.add_argument('--password', type=str, help='Password of admin user')
 
     def handle(self, *args, **options):
         if User.objects.count() == 0:

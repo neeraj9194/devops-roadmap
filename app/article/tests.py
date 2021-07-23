@@ -31,7 +31,7 @@ class TestArticleApi(TestCase):
         response = self.client.post('/api/article/', self.new_article)
         self.assertEqual(201, response.status_code)
         self.assertEqual(Article.objects.count(), 1)
-    
+
     def test_retrieve_article(self):
         self.auth('testuser', 'testpass')
         article = Article.objects.create(title="first")
