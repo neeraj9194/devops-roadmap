@@ -8,6 +8,8 @@ django = "*"
 djangorestframework = "*"
 mysqlclient = "*"
 gunicorn = "*"
+pylint = "*"
+pylint-django = "*"
 
 [dev-packages]
 

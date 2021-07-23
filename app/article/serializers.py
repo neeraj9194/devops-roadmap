@@ -1,6 +1,7 @@
-from account.serializers import UserSerializer
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+from account.serializers import UserSerializer
 from .models import Article
 
 TRIMMED_SUMMARY_LETTERS = 100

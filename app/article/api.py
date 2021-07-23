@@ -1,10 +1,9 @@
-from .models import Article
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import ListAPIView
-from .serializers import ArticleSummarySerializer, ArticleSerializer
-from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
-from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
+
+from .models import Article
+from .serializers import ArticleSummarySerializer, ArticleSerializer
 
 
 class ArticlePagination(PageNumberPagination):
@@ -20,5 +19,4 @@ class ArticleApi(ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return ArticleSummarySerializer
-        else:
-            return ArticleSerializer
+        return ArticleSerializer

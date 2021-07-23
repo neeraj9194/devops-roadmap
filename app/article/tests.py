@@ -1,10 +1,11 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
-from django.contrib.auth.models import User
+
 from .models import Article
 
-# Create your tests here.
 
+# Create your tests here.
 
 class TestArticleApi(TestCase):
 
@@ -14,6 +15,7 @@ class TestArticleApi(TestCase):
         return super().setUp()
 
     def setUp(self) -> None:
+        self.client = None
         self.test_user = User.objects.create_user(
             'testuser', 'test@test.com', 'testpass')
         self.new_article = {

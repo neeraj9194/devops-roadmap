@@ -13,6 +13,7 @@ class TestAccountApi(TestCase):
         return super().setUp()
 
     def setUp(self) -> None:
+        self.client = None
         self.test_user = User.objects.create_user('testuser', 'test@test.com', 'testpass')
         self.new_user = {
             'username': 'test1', 
@@ -23,7 +24,7 @@ class TestAccountApi(TestCase):
 
     def test_create_user(self):
         self.auth('testuser', 'testpass')
-        response = self.client.post('/api/user/', self.new_user)
+        response = self.client.post('/api/use/', self.new_user)
         self.assertEqual(201, response.status_code)
         self.assertEqual(User.objects.count(), 2)
     
@@ -44,4 +45,3 @@ class TestAccountApi(TestCase):
         response = self.client.get(f'/api/user/{self.test_user.id}/')
         self.assertEqual(200, response.status_code)
         self.assertEqual(resp_dict, response.data)
-

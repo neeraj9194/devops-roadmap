@@ -1,8 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 # Create your models here.
-
 
 class Article(models.Model):
     """
@@ -18,8 +17,6 @@ class Article(models.Model):
 
     class Meta:
         ordering = ["-updated_ts"]
-    
+
     def __str__(self) -> str:
         return self.title
-    
-

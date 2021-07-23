@@ -2,8 +2,8 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update \
-  && apt install -y python3-dev default-libmysqlclient-dev build-essential pipenv \
+RUN apt-get update \
+  && apt-get install -y python3-dev default-libmysqlclient-dev build-essential pipenv \
   && pip3 install --upgrade pip
 
 

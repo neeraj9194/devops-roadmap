@@ -1,0 +1,33 @@
+pipeline {
+    agent { label '!master' }
+
+    stages {
+        stage('Setup') {
+            steps {
+                git branch: 'main', url: 'https://github.com/neeraj9194/devops-roadmap'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                dir('app') { 
+                    script {
+                        dockerImage = docker.build("djangoapp", ".")
+                    }
+                }
+            }
+        }
+        stage('Test App') {
+            steps {
+                script {
+                    dockerImage.run("", "python3 manage.py test")
+                    dockerImage.run("", "pylint --load-plugins=pylint_django *.py --django-settings-module=blog.settings")
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'echo not yet...'
+            }
+        }
+    }
+}
