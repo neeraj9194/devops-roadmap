@@ -189,3 +189,5 @@ cython_debug/
 *.pub
 .vscode
 .idea
+vagrant/terraform_vars.yaml
+vagrant/vault.yaml

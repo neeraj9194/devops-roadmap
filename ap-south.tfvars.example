@@ -7,5 +7,5 @@
     "key_path": "~/.ssh/awskey.pub",
     "s3_bucket_name": "registry-bucket-backend",
     "registry_port": 5000,
-    "output_cert_path": "/home/neeraj/projects/devops-roadmap/ansible/cert"
+    "output_cert_path": "/home/neeraj/projects/devops-roadmap/ansible/cert/"
 }

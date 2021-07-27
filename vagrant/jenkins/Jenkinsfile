@@ -26,9 +26,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                withAWS(credentials: 'aws-id') {
-                    sh 'env'
-                    ansiblePlaybook installation: 'ansible', inventory: 'ansible/aws_ec2.yaml', playbook: 'ansible/deploy_service.yaml'  
+                dir('ansible') {
+                    sshagent(['aws-ssh-key']) {
+                        withAWS(credentials: 'aws-id') {
+                            ansiblePlaybook becomeUser: 'ubuntu', installation: 'ansible', inventory: 'aws_ec2.yaml', playbook: 'deploy_service.yaml', vaultCredentialsId: 'AnsibleVault'
+                        }
+                    } 
                 }
             }
         }
