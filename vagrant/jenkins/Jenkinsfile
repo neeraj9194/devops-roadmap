@@ -26,7 +26,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'echo not yet...'
+                withAWS(credentials: 'aws-id') {
+                    sh 'env'
+                    ansiblePlaybook installation: 'ansible', inventory: 'ansible/aws_ec2.yaml', playbook: 'ansible/deploy_service.yaml'  
+                }
             }
         }
     }

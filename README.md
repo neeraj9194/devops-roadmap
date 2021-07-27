@@ -53,6 +53,7 @@ The following diagram shows the key components of the configuration for this mod
 
     ```
     ansible-galaxy collection install amazon.aws
+    # above collection requires boto3 and botocore
     ```
 
 - Now if you have run terraform apply command it will create 3 things in ansible directory.
@@ -85,6 +86,10 @@ make init_db          # initialize DB with default user.
 > Now you can login into application on LB dns address, goto 
 `<lb-dns-address>/api-auth/login/`
 
+
+## CI/CD with Jenkins
+
+
 ## TODO (infrastructure)
 
 - [x] Application Load Balancer
@@ -110,4 +115,6 @@ make init_db          # initialize DB with default user.
 
 - [x] Ansible's dynamic inventory to provision the application.
 
-- [ ] CI/CD pipeline using Jenkins.
+- [x] CI using Jenkins.
+
+- [ ] CD Pipeline
