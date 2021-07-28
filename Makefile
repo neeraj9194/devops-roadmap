@@ -28,3 +28,7 @@ build:
 
 push:
 	cd app && docker push application-lb-317512653.ap-south-1.elb.amazonaws.com/v2/dockerapp:latest
+
+jenkins:
+	cd vagrant && vagrant up
+
