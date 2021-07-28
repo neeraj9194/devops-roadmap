@@ -29,7 +29,7 @@ pipeline {
                 dir('ansible') {
                     sshagent(['aws-ssh-key']) {
                         withAWS(credentials: 'aws-id') {
-                            ansiblePlaybook becomeUser: 'ubuntu', installation: 'ansible', inventory: 'aws_ec2.yaml', playbook: 'deploy_service.yaml', vaultCredentialsId: 'AnsibleVault'
+                            ansiblePlaybook becomeUser: 'ubuntu', installation: 'ansible', inventory: 'aws_ec2.yaml', playbook: 'deploy_service.yaml', vaultCredentialsId: 'AnsibleVault', tags: 'app', extras: '-vv', credentialsId: 'aws-ssh-key'
                         }
                     } 
                 }

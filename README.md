@@ -89,6 +89,36 @@ make init_db          # initialize DB with default user.
 
 ## CI/CD with Jenkins
 
+From makefile you can startup the vagrant machines
+
+```
+make jenkins
+```
+This will start 2 machines 1 master jenkins server 1 slave. You can access your jenkins on `localhost:8080`
+
+> Because jenkins uses ansible to deploy your app the files mentioned above are also important here.
+  For, `ansible/terraform_vars.yaml` and `ansible/vault.yaml`, You need to copy these files
+  to your local `/vagrant` directory which will be auto mounted to machines.
+
+  For, `ansible/cert/*` you have to copy it to `/etc/docker/certs.d/<load balancer dns>/` 
+
+
+Now, you need to setup node to connect a slave(hostname: jenkins-slave) to master. See online instructions https://wiki.jenkins.io/pages/viewpage.action?pageId=72778132
+
+After that you can setup a pipeline project, `vagrant/jenkins/Jenkinsfile` can be used for the script.
+
+You also have to add few credentials, for pipeline to work.
+
+1. Credential named `AnsibleVault`(type: Secret text) contaning vault password.
+2. `aws-id` AWS key and secret(type: AWS credentials) to list the host machines to deploy (used by ansible).
+3. `aws-ssh-key`(type: "SSH username with Key") which stores the private key we created/used in terraform to initilize service machines.
+
+Plugins:
+
+These plugins are required in order to run the above pipeline.
+`Ansible plugin`, `Docker Pipeline`, `SSH Agent Plugin` 
+
+
 
 ## TODO (infrastructure)
 
