@@ -5,8 +5,8 @@
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul -o ProxyCommand="ssh -W %h:%p -q ubuntu@{{ groups["aws_bastion_host"][0] }}"'
     htpasswd_path: /auth/htpasswd
   vars_files:
-    - vault.yaml
-    - terraform_vars.yaml
+    - ["vault.yaml", "/vagrant/vault.yaml"]
+    - ["terraform_vars.yaml", "/vagrant/terraform_vars.yaml"]
   gather_facts: false
   roles:
     - {role: 'server', tags: 'server'}

@@ -15,3 +15,4 @@ add-apt-repository --yes --update ppa:ansible/ansible
 apt-get install ansible -y
 ansible-galaxy collection install amazon.aws
 pip3 install boto3
+pip3 install docker
