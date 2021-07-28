@@ -97,13 +97,15 @@ make jenkins
 This will start 2 machines 1 master jenkins server 1 slave. You can access your jenkins on `localhost:8080`
 
 > Because jenkins uses ansible to deploy your app the files mentioned above are also important here.
-  For, `ansible/terraform_vars.yaml` and `ansible/vault.yaml`, You need to copy these files
-  to your local `/vagrant` directory which will be auto mounted to machines.
+<br /><br />
+For, `ansible/terraform_vars.yaml` and `ansible/vault.yaml`, You need to copy these files to your local `/vagrant` directory which will be auto mounted to machines.
+<br /><br />
+For, `ansible/cert/*` you have to copy it to `/etc/docker/certs.d/<load balancer dns>/` 
 
-  For, `ansible/cert/*` you have to copy it to `/etc/docker/certs.d/<load balancer dns>/` 
+<br />
+Now, you need to setup node to connect a slave(hostname: jenkins-slave) to master. 
 
-
-Now, you need to setup node to connect a slave(hostname: jenkins-slave) to master. See online instructions https://wiki.jenkins.io/pages/viewpage.action?pageId=72778132
+[See online instructions]. 
 
 After that you can setup a pipeline project, `vagrant/jenkins/Jenkinsfile` can be used for the script.
 
@@ -148,3 +150,5 @@ These plugins are required in order to run the above pipeline.
 - [x] CI using Jenkins.
 
 - [x] CD Pipeline
+
+[See online instructions]: https://wiki.jenkins.io/pages/viewpage.action?pageId=72778132
