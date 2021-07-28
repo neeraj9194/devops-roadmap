@@ -117,4 +117,4 @@ make init_db          # initialize DB with default user.
 
 - [x] CI using Jenkins.
 
-- [ ] CD Pipeline
+- [x] CD Pipeline

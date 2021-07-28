@@ -23,7 +23,7 @@ module "inventory" {
     secret = aws_iam_access_key.s3_read_only.secret
   }
   s3_read_write = {
-    id = aws_iam_access_key.s3_read_only.id
+    id = aws_iam_access_key.s3_read_write.id
     secret = aws_iam_access_key.s3_read_write.secret
   }
 }

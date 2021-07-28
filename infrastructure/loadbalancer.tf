@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "app_group" {
 
   # Alter the destination of the health check to be the health URL.
   health_check {
-    path = "/"
+    path = "/health"
     port = var.application_port
   }
   

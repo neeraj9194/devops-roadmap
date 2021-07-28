@@ -2,10 +2,10 @@
 
 data "aws_iam_policy_document" "read_only" {
   statement {
-      effect = "Allow"
-      actions = [ "s3:GetObject" ]
-      resources = [
-        "arn:aws:s3:::${var.s3_bucket_name}",
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket_name}",
     ]
   }
 }
@@ -23,8 +23,8 @@ resource "aws_iam_access_key" "s3_read_only" {
 }
 
 resource "aws_iam_user_policy" "s3_read_only" {
-  name = "read-only-policy"
-  user = aws_iam_user.s3_read_only.name
+  name   = "read-only-policy"
+  user   = aws_iam_user.s3_read_only.name
   policy = data.aws_iam_policy_document.read_only.json
 }
 
@@ -32,19 +32,21 @@ resource "aws_iam_user_policy" "s3_read_only" {
 
 data "aws_iam_policy_document" "read_write" {
   statement {
-      sid = "ListObjectsInBucket"
-      effect = "Allow"
-      actions = [ "s3:ListBucket" ]
-      resources = [
-        "arn:aws:s3:::${var.s3_bucket_name}",
+    sid    = "AllObjectActions"
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListBucketMultipartUploads",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload",
     ]
-  }
-  statement {
-      sid = "AllObjectActions"
-      effect = "Allow"
-      actions = [ "s3:*Object*" ]
-      resources = [
-        "arn:aws:s3:::${var.s3_bucket_name}",
+    resources = [
+      "arn:aws:s3:::registry-bucket-backend/*",
+      "arn:aws:s3:::registry-bucket-backend"
     ]
   }
 }
@@ -62,7 +64,7 @@ resource "aws_iam_access_key" "s3_read_write" {
 }
 
 resource "aws_iam_user_policy" "s3_read_write" {
-  name = "read-write-policy"
-  user = aws_iam_user.s3_read_write.name
+  name   = "read-write-policy"
+  user   = aws_iam_user.s3_read_write.name
   policy = data.aws_iam_policy_document.read_write.json
 }
