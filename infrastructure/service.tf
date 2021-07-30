@@ -1,9 +1,4 @@
 
-locals {
-  # Three service machines(2+1 AZ).
-  instance_count = var.availability_zones_count + 1
-}
-
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -21,7 +16,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "service-box" {
-  count           = local.instance_count
+  count           = var.instance_count
   ami             = data.aws_ami.ubuntu.id
   key_name        = aws_key_pair.awskeypair.key_name
 
@@ -36,7 +31,7 @@ resource "aws_instance" "service-box" {
 }
 
 resource "aws_ebs_volume" "storage" {
-  count             = local.instance_count
+  count             = var.instance_count
   availability_zone = count.index == 0 || count.index == 1 ? data.aws_availability_zones.available.names[0] : data.aws_availability_zones.available.names[count.index - 1]
   size              = 8
 
@@ -46,7 +41,7 @@ resource "aws_ebs_volume" "storage" {
 }
 
 resource "aws_volume_attachment" "service_box_attach" {
-  count       = local.instance_count
+  count       = var.instance_count
   device_name = "/dev/sdh"
   volume_id   = aws_ebs_volume.storage[count.index].id
   instance_id = aws_instance.service-box[count.index].id

@@ -2,7 +2,7 @@
   become: true
   vars:
     # {{ groups["aws_bastion_host"][0] }} getting first available bastion host.
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul -o ProxyCommand="ssh -W %h:%p -q ubuntu@{{ groups["aws_bastion_host"][0] }}"'
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul -o ProxyCommand="ssh -W %h:%p -o StrictHostKeyChecking=no -q ubuntu@{{ groups["aws_bastion_host"][0] }}"'
     htpasswd_path: /auth/htpasswd
   vars_files:
     - ["vault.yaml", "/vagrant/vault.yaml"]

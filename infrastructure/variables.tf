@@ -9,6 +9,10 @@ variable "availability_zones_count" {
     default = 2
 }
 
+variable "instance_count" {
+    default = 3
+}
+
 variable "db_name" {
   description = "RDS DB name"
   type        = string
